@@ -58,10 +58,7 @@
     </div>
 
     <div class="container">
-
-      <h1>iKRS</h1> 
-      <h1 class="bebas">Institut Teknologi Indonesia</h1>
-      
+      <h1 class="bebas">Institut Teknologi Indonesia</h1>      
     </div> <!-- /container -->
 
     <!-- Le javascript

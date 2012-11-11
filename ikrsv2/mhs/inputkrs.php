@@ -18,7 +18,7 @@
 		$sks[] = $k['sks'];
 	}
 
-	//CARA BARU
+	//CARA BARU untuk Tahun Ajaran
 	$bulan = date('n');
 
 	if ($bulan > 8){
@@ -64,7 +64,7 @@
 					echo "sks['".$kode_matkul[$j]."'] = ".$sks[$j].";\n";
 				}
 			?>
-			
+
 			function hitungtotal(){
 				jum = 0;
 				for(i=0;i<jumlah;i++){
@@ -108,6 +108,7 @@
 	            		<ul class="nav">
 	              			<li><a href="index.php"><i class="icon-home"></i> Home</a></li>
 	              			<li class="active"><a href="inputkrs.php"><i class="icon-check"></i> KRS Online</a></li>
+	              			<li><a href="khs.php"><i class="icon-list"></i> KHS</a></li>
 	              			<li><a href="../logout.php"><i class="icon-signout"></i>Logout</a></li>
 	            		</ul>
 	          		</div><!--/.nav-collapse -->
@@ -121,56 +122,68 @@
 		?>
 			<div class="container"> <!--Output-->
 				<!--<div class="row-fluid" style="padding: 10px;">-->
-					<h2>Berikut KRS yang anda ambil :</h2>					
-					<table class="table table-hover table-bordered">
-						<tr>
-							<th height="25">No.</th>
-							<th>Kode Mata Kuliah</th>
-							<th>Nama Mata Kuliah</th>
-							<th>Semester</th>
-							<th>Tahun</th>
-							<th>SKS</th>
-							<th>Fungsi</th>
-						</tr>
-						<?php
-							$krs = mysql_query("SELECT a.kode_matkul, a.semester, a.tahun, b.nama_matkul, b.sks FROM krs a LEFT JOIN matakuliah b ON b.kode_matkul = a.kode_matkul WHERE a.nrp='$nrp' AND a.semester='$semester' AND a.tahun='$tahun'");
-							$jum = 0;
-							$i = 1;
-							while($k = mysql_fetch_array($krs)){
-						?>
-								<tr>
-									<td><?=$i;?></td>
-									<td><?=$k['kode_matkul'];?></td>
-									<td><?=$k['nama_matkul'];?></td>
-									<td><?=$k['semester'];?></td>
-									<td><?=$k['tahun'];?></td>
-									<td><?=$k['sks'];?></td>
-									<td>
-										<form name="hapuskrs" method="post" action="hapuskrs.php" onSubmit="return confirm('Click OK or Cancel to Continue');">
-            								<input type="hidden" name="km" value="<?php echo $k['kode_matkul']; ?>"> 
-            								<button type="submit" class="btn btn-danger btn-large"><i class="icon-trash icon-white icon-large"></i></button>
-          								</form>
-									</td>
-								</tr>
-						<?php
-								$jum = $jum + $k['sks'];
-								$i++;
-							}
-						?>
-						<tr>
-							<td colspan="5">
-								<b>JUMLAH SKS</b>
-							</td>
-							<td>
-								<b><?=$jum;?></b>
-							</td>
-							<td></td>
-						</tr>
-					</table>
-					<p>
-					<center>
-						<input class="btn btn-info" type="button" value="Cetak" onClick="window.print();" style="cursor:pointer;">
-					</center>
+				<h2>Berikut KRS yang anda ambil :</h2>					
+				<table class="table table-hover table-bordered">
+					<tr>
+						<th height="25">No.</th>
+						<th>Kode Mata Kuliah</th>
+						<th>Nama Mata Kuliah</th>
+						<th>Semester</th>
+						<th>Tahun</th>
+						<th>SKS</th>
+						<th>Status</th>
+						<th>Fungsi</th>
+					</tr>
+					<?php
+						$krs = mysql_query("SELECT a.kode_matkul, a.semester, a.tahun, b.nama_matkul, b.sks, a.status FROM krs a LEFT JOIN matakuliah b ON b.kode_matkul = a.kode_matkul WHERE a.nrp='$nrp' AND a.semester='$semester' AND a.tahun='$tahun'");
+						$jum = 0;
+						$i = 1;
+						while($k = mysql_fetch_array($krs)){
+					?>
+							<tr>
+								<td><?=$i;?></td>
+								<td><?=$k['kode_matkul'];?></td>
+								<td><?=$k['nama_matkul'];?></td>
+								<td><?=$k['semester'];?></td>
+								<td><?=$k['tahun'];?></td>
+								<td><?=$k['sks'];?></td>
+								<td>
+									<?
+									//Cek Statusnya
+										if ($k['status']=='N'){
+											echo 'Belum disetujui';
+										}
+										else {
+											echo 'Sudah disetujui';
+										}
+									?>
+								</td>
+								<td>
+									<form name="hapuskrs" method="post" action="hapuskrs.php" onSubmit="return confirm('Click OK or Cancel to Continue');">
+        								<input type="hidden" name="km" value="<?php echo $k['kode_matkul']; ?>"> 
+        								<button title="Hapus" type="submit" class="btn btn-danger btn-large"><i class="icon-trash icon-white icon-large"></i></button>
+      								</form>
+								</td>
+							</tr>
+					<?php
+							$jum = $jum + $k['sks'];
+							$i++;
+						}
+					?>
+					<tr>
+						<td colspan="5">
+							<b>JUMLAH SKS</b>
+						</td>
+						<td>
+							<b><?=$jum;?></b>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+				<p>
+				<center>
+					<input class="btn btn-info" type="button" value="Cetak" onClick="window.print();" style="cursor:pointer;">
+				</center>
 				<!--</div>-->
 			</div><!--Output Selesai-->
 		<?php
@@ -202,10 +215,10 @@
 							<td id="k2<?=$i;?>"><?=$nama_matkul[$i];?></td>
 							<td id="k3<?=$i;?>"><?=$sks[$i];?></td>
 							<td id="k4<?=$i;?>">
-								<div class="roundedTwo">
-									<input type="checkbox" id="roundedTwo<?=$i?>" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>">
-									<label for="roundedTwo<?=$i?>"></label>
-								</div>
+								
+									<input type="checkbox" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>">
+								
+								
 							</td>
 						</tr>
 						<?php

@@ -1,9 +1,228 @@
-/* Ubah Warna Body */
+/*Daftar Isi
+1. Background
+2. Posisi Icon
+3. Checkboxes
+4. Shadow from Google
+5. Table Head
+6. Ubah Warna Font Navbar
+7. Ubah Warna Body
+8. Modif Important Box
+9. Input Box
+10. Hover Input Box
+11. Edit input Box
+12. Modif Tombol
+13. Garis Tengah
+14. Jumbotron dan Masthead
+15. iKRS
+*/
+
+/*15. iKRS*/
+h1.ikrs{
+  position: relative;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+}
+h1.ikrs:hover{
+color: #222;
+  -webkit-transition: all 0.5s ease-in-out;
+       -moz-transition: all 0.5s ease-in-out;
+         -o-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px #fff;
+}
+h1.ikrs:hover .i{
+  color: #FE6F2D;
+}
+/*14. Jumbotron dan Masthead*/
+/*Base Class*/
+.jumbotron {
+  position: relative;
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+}
+.jumbotron h1 {
+  font-size: 80px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.jumbotron h1:hover {
+  color: #222;
+  -webkit-transition: all 0.5s ease-in-out;
+       -moz-transition: all 0.5s ease-in-out;
+         -o-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px #fff;
+}
+.jumbotron h1:hover .i{
+  color: #FE6F2D;
+}
+.jumbotron p {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.25;
+  margin-bottom: 30px;
+}
+.masthead {
+  padding: 70px 0 80px;
+  margin-bottom: 0;
+  color: #fff;
+}
+.masthead h1 {
+  font-size: 120px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.masthead p {
+  font-size: 40px;
+  font-weight: 200;
+  line-height: 1.25;
+}
+/*Tablet to Desktop*/
+@media (min-width: 768px) and (max-width: 980px) {
+/* Widen masthead and social buttons to fill body padding */
+  .jumbotron {
+    margin-top: -20px; /* Offset bottom margin on .navbar */
+  }
+}
+/*Tablet */
+@media (max-width: 767px) {
+  /* Widen masthead and social buttons to fill body padding */
+  .jumbotron {
+    padding: 40px 20px;
+    margin-top:   -20px; /* Offset bottom margin on .navbar */
+    margin-right: -20px;
+    margin-left:  -20px;
+  }
+  .masthead h1 {
+    font-size: 90px;
+  }
+  .masthead p,
+  .masthead .btn {
+    font-size: 24px;
+  }
+}
+/*Phone Landscape*/
+@media (max-width: 480px) {
+  /* Remove padding above jumbotron */
+  body {
+    padding-top: 0;
+  }
+  /* Downsize the jumbotrons */
+  .jumbotron h1 {
+    font-size: 45px;
+  }
+  .jumbotron p,
+  .jumbotron .btn {
+    font-size: 18px;
+  }
+  .jumbotron .btn {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+/*13. Garis Tengah */
+.garistengah::before {
+  left: 0px;
+}
+.garistengah::after {
+  right: 0px;
+}
+.garistengah::before, .garistengah::after {
+  display: block;
+  content: '';
+  width: 240px;
+  height: 2px;
+  background: #392F2C;
+  position: absolute;
+  top: 50%;
+  margin-top: -1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/*12. Modif Tombol */
+.btn {
+  border-radius: 2px;
+}
+/*11. Edit input box*/
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  height: 23px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+}
+
+/*10. Hover input box*
+input[type="text"]:hover, input[type="password"]:hover, input[type="number"]:hover, input[type="email"]:hover, input[type="url"]:hover, input[type="search"]:hover, input[type="tel"]:hover, .uneditable-input:hover {
+  border: 1px solid #b6bfc0;
+  box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .7), 0 0 0 5px #f5f7f8;
+}*/
+
+/*9. Input Box */
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  color: #777;
+  padding-left: 10px;
+  margin: 10px;
+  margin-top: 12px;
+  margin-left: 18px;
+  width: 200px;
+  height: 30px;
+  border: 1px solid #c7d0d2;
+  border-radius: 2px;
+  box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #f5f7f8;
+  -webkit-transition: all .4s ease;
+  -moz-transition: all .4s ease;
+  transition: all .4s ease;
+}
+
+input[type=text]:hover,
+input[type=password]:hover {
+  border: 1px solid #b6bfc0;
+  box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .7), 0 0 0 5px #f5f7f8;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  border: 1px solid #a8c9e4;
+  box-shadow: inset 0 1.5px 3px rgba(190, 190, 190, .4), 0 0 0 5px #e6f2f9;
+}
+
+/*8. Modif Important*/
+.label-important {
+  background-color: #FFEBE8;
+  border: 1px dashed;
+  border-color: #C00;
+  border-radius: 2px;
+  margin: 0 0 16px 8px;
+  padding: 12px;
+  color: #414141;
+  -webkit-animation-name: shake;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: shake;
+  -moz-animation-fill-mode: both;
+  -moz-animation-duration: 0.5s;
+  -moz-animation-iteration-count: 1;
+  -moz-animation-timing-function: linear;
+  animation-name: shake;
+  animation-fill-mode: both;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+/*7. Ubah Warna Body */
 body {
   background-color: #FBFBFB;
 } 
 
-/* Ubah Warna Font Navbar */
+/*6. Ubah Warna Font Navbar */
 .navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle {
   color: #FF651E;
 }
@@ -29,12 +248,12 @@ body {
   background-color: #111111;
 }
 
-/* Table Head */
+/*5. Table Head */
 .table th {
   background-color: whiteSmoke;
 }
 
-/*Shadow From Google */
+/*4. Shadow From Google */
 #bottom-shadow {
 height : 5px;
 margin: 5px 0 25px;
@@ -56,6 +275,7 @@ background: -webkit-gradient(linear,left top,left bottom,from(rgba(0, 0, 0, .3))
 background-image: -moz-radial-gradient(top,ellipse farthest-side,rgba(0, 0, 0, .3),transparent);
 }
 
+/*3. Checkboxes 
 input[type=checkbox] {
   visibility: hidden;
 }
@@ -722,7 +942,7 @@ input[type=checkbox] {
   opacity: 1;
 }
 
-/*Posisi Icon*/
+/*2. Posisi Icon*/
 
 .icon-glass {
   background-position: 0 0;
@@ -1286,7 +1506,7 @@ input[type=checkbox] {
   background-position: -456px -144px;
 }
 
-/*BACKGROUND */
+/*1. BACKGROUND */
 .jcube {
 	background-color:#556;
 	background-image: -webkit-linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),

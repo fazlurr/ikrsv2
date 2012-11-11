@@ -7,10 +7,10 @@
 
 	$userId = $_SESSION['user_id'];
 	//$nrp = $_GET['nrp'];
-	$nrp = $_POST['nrp'];
+	$komak = $_POST['kode_matkul'];
 	
 	if(!empty($nrp)){
-		$sql = "DELETE FROM user WHERE user_id='$nrp'";
+		$sql = "DELETE FROM matakuliah WHERE kode_matkul='$komak'";
 		$result = mysql_query($sql) or die(mysql_error());
 		header('Location: ' . $_SERVER['HTTP_REFERER']);
 	}

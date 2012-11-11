@@ -49,6 +49,7 @@
             <ul class="nav">
               <li class="active"><a href="index.php"><i class="icon-home"></i> Home</a></li>
               <li><a href="inputkrs.php"><i class="icon-check"></i> KRS Online</a></li>
+              <li><a href="khs.php"><i class="icon-list"></i> KHS</a></li>
               <li><a href="../logout.php"><i class="icon-signout"></i>Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->

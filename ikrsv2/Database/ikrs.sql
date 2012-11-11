@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2012 at 02:53 PM
+-- Generation Time: Nov 11, 2012 at 08:02 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -39,7 +39,12 @@ CREATE TABLE IF NOT EXISTS `dosen` (
 INSERT INTO `dosen` (`nidn`, `nama`) VALUES
 ('dosen1', 'Bapak Dosen'),
 ('dosen2', 'Bu Dosen'),
-('dosen3', 'Mas Dosen');
+('dosen3', 'Dosen A'),
+('dosen4', 'Dosen 4'),
+('dosen5', 'Dosen 5'),
+('dosen6', 'Dosen 6'),
+('dosen7', 'Dosen 7'),
+('dosen8', 'Dosen 8');
 
 -- --------------------------------------------------------
 
@@ -58,17 +63,15 @@ CREATE TABLE IF NOT EXISTS `krs` (
   PRIMARY KEY (`nomor`),
   KEY `nrp` (`nrp`),
   KEY `kode_matkul` (`kode_matkul`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `krs`
 --
 
 INSERT INTO `krs` (`nomor`, `nrp`, `kode_matkul`, `semester`, `tahun`, `nilai`, `status`) VALUES
-(1, '11510', 'DU103', 'Ganjil', '2012/2013', 'A', 'N'),
-(2, '11510', 'IF1094', 'Ganjil', '2012/2013', 'B', 'N'),
-(3, 'test', 'DU103', 'Ganjil', '2012/2013', 'B', 'N'),
-(4, 'test', 'IF1094', 'Ganjil', '2012/2013', 'A', 'N');
+(9, 'test', 'DU103', 'Ganjil', '2012/2013', 'D', 'Y'),
+(11, 'test', 'IF1094', 'Ganjil', '2012/2013', 'A', 'Y');
 
 -- --------------------------------------------------------
 
@@ -90,7 +93,13 @@ CREATE TABLE IF NOT EXISTS `matakuliah` (
 --
 
 INSERT INTO `matakuliah` (`kode_matkul`, `nama_matkul`, `sks`, `dosen`) VALUES
+('DK1023', 'KALKULUS I', 3, 'dosen7'),
+('DU1014', 'AGAMA KRISTEN', 3, 'dosen6'),
 ('DU103', 'AGAMA ISLAM', 3, 'dosen2'),
+('DU2012', 'BAHASA INGGRIS', 2, 'dosen5'),
+('IF1053', 'STATISTIKA PROBABILITAS', 3, 'dosen4'),
+('IF1062', 'PENGANTAR TEKNOLOGI INFORMASI + P', 2, 'dosen3'),
+('IF1083', 'ARSITEKTUR & ORG. KOMPUTER', 3, 'dosen8'),
 ('IF1094', 'KONSEP PEMROGRAMAN +P', 4, 'dosen1');
 
 -- --------------------------------------------------------
@@ -113,6 +122,8 @@ CREATE TABLE IF NOT EXISTS `mhs` (
 
 INSERT INTO `mhs` (`nrp`, `nama`, `penasihat`) VALUES
 ('11510', 'Jokowi', 'dosen1'),
+('11511', 'Mahasiswi', 'dosen2'),
+('11512', '1212', 'dosen1'),
 ('test', 'Seorang Mahasiswa', 'dosen1');
 
 -- --------------------------------------------------------
@@ -134,10 +145,17 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`user_id`, `password`, `type`) VALUES
 ('11510', 'c4ca4238a0b923820dcc509a6f75849b', 'mhs'),
+('11511', 'b55796d2dc2cb0c9aff4cf90d42f5887', 'mhs'),
+('11512', '646c9941d7fb1bc793a7929328ae3f2f', 'mhs'),
 ('admin1', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
 ('dosen1', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
 ('dosen2', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
 ('dosen3', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
+('dosen4', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
+('dosen5', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
+('dosen6', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
+('dosen7', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
+('dosen8', 'ce28eed1511f631af6b2a7bb0a85d636', 'dosen'),
 ('test', 'c4ca4238a0b923820dcc509a6f75849b', 'mhs');
 
 --

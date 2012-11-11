@@ -31,22 +31,37 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
+$maxRows_Matkul = 25;
+$pageNum_Matkul = 0;
+if (isset($_GET['pageNum_Matkul'])) {
+  $pageNum_Matkul = $_GET['pageNum_Matkul'];
+}
+$startRow_Matkul = $pageNum_Matkul * $maxRows_Matkul;
+
 mysql_select_db($database_LocalCoy, $LocalCoy);
-$query_mhs = "SELECT * FROM mhs";
-$mhs = mysql_query($query_mhs, $LocalCoy) or die(mysql_error());
-$row_mhs = mysql_fetch_assoc($mhs);
-$totalRows_mhs = mysql_num_rows($mhs);
+$query_Matkul = "SELECT * FROM matakuliah ORDER BY kode_matkul ASC";
+$query_limit_Matkul = sprintf("%s LIMIT %d, %d", $query_Matkul, $startRow_Matkul, $maxRows_Matkul);
+$Matkul = mysql_query($query_limit_Matkul, $LocalCoy) or die(mysql_error());
+$row_Matkul = mysql_fetch_assoc($Matkul);
+
+if (isset($_GET['totalRows_Matkul'])) {
+  $totalRows_Matkul = $_GET['totalRows_Matkul'];
+} else {
+  $all_Matkul = mysql_query($query_Matkul);
+  $totalRows_Matkul = mysql_num_rows($all_Matkul);
+}
+$totalPages_Matkul = ceil($totalRows_Matkul/$maxRows_Matkul)-1;
 
   defined('__NOT_DIRECT') || define('__NOT_DIRECT',1);
-  include '../cek-akses.php';
+  include '../cek-akses.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-  <title>iKRS | Daftar Mahasiswa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iKRS | Matakuliah</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -66,12 +81,12 @@ $totalRows_mhs = mysql_num_rows($mhs);
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" /> 
+    <link rel="shortcut icon" href="../ico/favicon.ico" />
     <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container" style="text-shadow:none;">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -79,7 +94,7 @@ $totalRows_mhs = mysql_num_rows($mhs);
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php">iKRS</a>
+          <a class="brand" href="">iKRS</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="index.php"><i class="icon-home"></i> Home</a></li>
@@ -114,34 +129,36 @@ $totalRows_mhs = mysql_num_rows($mhs);
       </div>
     </div>
 
+    
     <div class="container">
-  		<h1>Daftar Mahasiswa</h1>
-      <div class="row">
-        <div class="span5">
-          <table class="table table-bordered table-hover">
-            <tr>
-              <th>NRP</th>
-              <th>Nama</th>
-              <th colspan="2" style="text-align:center">Action</th>
-            </tr>
-            <?php do { ?>
-              <tr>
-                <td><?php echo $row_mhs['nrp']; ?></td>
-                <td><?php echo $row_mhs['nama']; ?></td>
-                <td style="text-align:center">
-                  <input type=button class="btn btn-info" onClick="location.href='editmhs.php?nrp=<?php echo $row_mhs['nrp']; ?>'" value='Edit'></td>
-                <td style="text-align:center">
-                	<form name="hapusmhs" method="post" action="hapusmhs.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
-                    <input type="hidden" name="nrp" value="<?php echo $row_mhs['nrp']; ?>"> 
+      <h1>Daftar Matakuliah</h1>
+      <table class="table table-bordered table-hover">
+        <tr>
+          <th>Kode Matkul</th>
+          <th>Nama Matkul</th>
+          <th>SKS</th>
+          <th>Dosen</th>
+          <th colspan="2">Fungsi</th>
+        </tr>
+        <?php do { ?>
+          <tr>
+            <td><?php echo $row_Matkul['kode_matkul']; ?></td>
+            <td><?php echo $row_Matkul['nama_matkul']; ?></td>
+            <td><?php echo $row_Matkul['sks']; ?></td>
+            <td><?php echo $row_Matkul['dosen']; ?></td>
+            <td style="text-align:center">
+                  <input type=button class="btn btn-info" onClick="location.href='editmatkul.php?km=<?php echo $row_Matkul['kode_matkul']; ?>'" value='Edit'></td>
+            <td style="text-align:center">
+                	<form name="hapusmhs" method="post" action="hapusmatkul.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
+                    <input type="hidden" name="nrp" value="<?php echo $row_Matkul['kode-matkul']; ?>"> 
                     <button type="submit" class="btn btn-danger" title="Hapus"><i class="icon-trash icon-white icon-large"></i></button>
                   </form>
                  </td>
-              </tr>
-              <?php } while ($row_mhs = mysql_fetch_assoc($mhs)); ?>
-          </table>
-        </div>
-      </div>
-    </div> <!-- /container -->
+          </tr>
+          <?php } while ($row_Matkul = mysql_fetch_assoc($Matkul)); ?>
+      </table>
+    </div> 
+    <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
@@ -151,5 +168,5 @@ $totalRows_mhs = mysql_num_rows($mhs);
   </body>
 </html>
 <?php
-mysql_free_result($mhs);
+mysql_free_result($Matkul);
 ?>

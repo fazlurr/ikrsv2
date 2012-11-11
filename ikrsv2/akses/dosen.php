@@ -8,5 +8,7 @@ $__akses_config = array(
 	'dosen/approve.php',
 	'dosen/nilai.php',
 	'dosen/pa.php',
+	'dosen/krsmhs.php',
+	'dosen/inputpa.php',
 	'redirect.php',
 );

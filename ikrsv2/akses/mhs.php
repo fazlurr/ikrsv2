@@ -11,6 +11,7 @@ $__akses_config = array(
 	'mhs/redirect.php',
 	'mhs/daftarkrs.php',
 	'mhs/hapuskrs.php',
+	'mhs/khs.php',
 	'index.php',
 	'view-artikel.php'
 );

@@ -1,7 +1,7 @@
 <?php require_once('../Connections/LocalCoy.php'); ?>
 <?php
   defined('__NOT_DIRECT') || define('__NOT_DIRECT',1);
-  include '../cek-akses.php'; 
+  include '../cek-akses.php';
 
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -40,15 +40,16 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE mhs SET nama=%s, penasihat=%s WHERE nrp=%s",
-                       GetSQLValueString($_POST['nama'], "text"),
-                       GetSQLValueString($_POST['penasihat'], "text"),
-                       GetSQLValueString($_POST['nrp'], "text"));
+  $updateSQL = sprintf("UPDATE matakuliah SET nama_matkul=%s, sks=%s, dosen=%s WHERE kode_matkul=%s",
+                       GetSQLValueString($_POST['nama_matkul'], "text"),
+                       GetSQLValueString($_POST['sks'], "int"),
+                       GetSQLValueString($_POST['dosen'], "text"),
+                       GetSQLValueString($_POST['kode_matkul'], "text"));
 
   mysql_select_db($database_LocalCoy, $LocalCoy);
   $Result1 = mysql_query($updateSQL, $LocalCoy) or die(mysql_error());
 
-  $updateGoTo = "list-mhs.php";
+  $updateGoTo = "list-matkul.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
@@ -56,15 +57,15 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   header(sprintf("Location: %s", $updateGoTo));
 }
 
-$colname_mhs = "-1";
-if (isset($_GET['nrp'])) {
-  $colname_mhs = $_GET['nrp'];
+$colname_mk = "-1";
+if (isset($_GET['km'])) {
+  $colname_mk = $_GET['km'];
 }
 mysql_select_db($database_LocalCoy, $LocalCoy);
-$query_mhs = sprintf("SELECT * FROM mhs WHERE nrp = %s", GetSQLValueString($colname_mhs, "text"));
-$mhs = mysql_query($query_mhs, $LocalCoy) or die(mysql_error());
-$row_mhs = mysql_fetch_assoc($mhs);
-$totalRows_mhs = mysql_num_rows($mhs);
+$query_mk = sprintf("SELECT * FROM matakuliah WHERE kode_matkul = %s", GetSQLValueString($colname_mk, "text"));
+$mk = mysql_query($query_mk, $LocalCoy) or die(mysql_error());
+$row_mk = mysql_fetch_assoc($mk);
+$totalRows_mk = mysql_num_rows($mk);
 
 //melakukan query dosen ke database
   $sqldosen = mysql_query("SELECT * FROM dosen");
@@ -72,19 +73,16 @@ $totalRows_mhs = mysql_num_rows($mhs);
     $nidn[] = $k['nidn'];
     $nama_dosen[] = $k['nama'];
   }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>iKRS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+  <title>iKRS | Edit Matkul</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="Description" content="" />
+  <meta name="author" content="" />
 
-  <!-- Le styles -->
+<!-- Le styles -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/custom.css" rel="stylesheet">
     <style>
@@ -92,21 +90,21 @@ $totalRows_mhs = mysql_num_rows($mhs);
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.css" rel="stylesheet">
-  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
+<link href="../css/bootstrap-responsive.min.css" rel="stylesheet" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" />
-    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
-  </head>
+  <!-- Le fav and touch icons -->
+  <link rel="shortcut icon" href="../ico/favicon.ico" /> 
+  <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
+</head>
 
-  <body>
-  	<div class="navbar navbar-inverse navbar-fixed-top">
-    	<div class="navbar-inner">
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
       <div class="container" style="text-shadow:none;">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
           <span class="icon-bar"></span>
@@ -134,13 +132,13 @@ $totalRows_mhs = mysql_num_rows($mhs);
                       </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matakuliah <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="add-matkul.php"><i class="icon-plus"></i> Input Matakuliah</a></li>
-                <li class="divider"></li>
-                <li><a href="list-matkul.php"><i class="icon-list"></i> Daftar Matakuliah</a></li>
-              </ul>
-            </li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matakuliah <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="add-matkul.php"><i class="icon-plus"></i> Input Matakuliah</a></li>
+                          <li class="divider"></li>
+                          <li><a href="list-matkul.php"><i class="icon-list"></i> Daftar Matakuliah</a></li>
+                        </ul>
+              </li>
             <li><a href="../logout.php"><i class="icon-signout"></i>Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -156,17 +154,21 @@ $totalRows_mhs = mysql_num_rows($mhs);
           <form method="post" name="form1" action="<?php echo $editFormAction; ?>">
             <table class="table table-hover table-bordered">
               <tr>
-                <td>NRP</td>
-                <td><?php echo $row_mhs['nrp']; ?></td>
+                <td nowrap align="right">Kode Matkul</td>
+                <td><?php echo $row_mk['kode_matkul']; ?></td>
               </tr>
               <tr>
-                <td>Nama</td>
-                <td><input type="text" name="nama" value="<?php echo htmlentities($row_mhs['nama'], ENT_COMPAT, 'UTF-8'); ?>" size="32"></td>
+                <td>Nama Matakuliah</td>
+                <td><input type="text" name="nama_matkul" value="<?php echo htmlentities($row_mk['nama_matkul'], ENT_COMPAT, ''); ?>" size="32"></td>
               </tr>
               <tr>
-                <td>Penasihat</td>
+                <td>SKS</td>
+                <td><input type="text" name="sks" value="<?php echo htmlentities($row_mk['sks'], ENT_COMPAT, ''); ?>" size="32"></td>
+              </tr>
+              <tr valign="baseline">
+                <td nowrap align="right">Dosen</td>
                 <td>
-                  <select name="penasihat">
+                  <select name="dosen">
                     <?php
                       for($i=0; $i<count($nidn); $i++){
                     ?>
@@ -175,19 +177,18 @@ $totalRows_mhs = mysql_num_rows($mhs);
                       }
                     ?>
                   </select>
-                </td>              
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
+                </td>              </tr>
+              <tr valign="baseline">
+                <td nowrap align="right">&nbsp;</td>
                 <td><input type="submit" class="btn btn-success" value="Update record"></td>
               </tr>
             </table>
             <input type="hidden" name="MM_update" value="form1">
-            <input type="hidden" name="nrp" value="<?php echo $row_mhs['nrp']; ?>">
+            <input type="hidden" name="kode_matkul" value="<?php echo $row_mk['kode_matkul']; ?>">
           </form>
           <p>&nbsp;</p>
         </div>
-      </div>
+      </div>	
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -198,5 +199,5 @@ $totalRows_mhs = mysql_num_rows($mhs);
   </body>
 </html>
 <?php
-mysql_free_result($mhs);
+mysql_free_result($mk);
 ?>

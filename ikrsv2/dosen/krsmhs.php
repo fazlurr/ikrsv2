@@ -7,6 +7,17 @@
 
   $userId = $_SESSION['user_id'];
 
+  if (isset($_POST['nrp'])){
+    $nrp = mysql_real_escape_string($_POST['nrp']);
+    $list2 = mysql_query("SELECT nama FROM mhs WHERE nrp = '$nrp'") or die(mysql_error());
+    while($k2 = mysql_fetch_array($list2)){
+      $nama = $k2['nama'];
+    }
+  }
+  else {
+    header( 'Location: pa.php' );
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +36,12 @@
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
+      .slideThree::before {
+        content: 'Ya';
+      }
+      .slideThree::after {
+        content: 'Tidak';
+      }
     </style>
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
@@ -35,6 +52,7 @@
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="../ico/favicon.ico" /> 
+    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
   </head>
 
   <body>
@@ -60,33 +78,57 @@
     </div>
 
     <div class="container">
-      <h1>Daftar Mahasiswa</h1>
+      <h1>KRS Mahasiswa</h1>
       <div class="row">
         <div class="span9">
-          <table class="table table-hover table-bordered">
-            <tr>
-              <th>NRP</th>
-              <th>Nama</th>
-              <th>Fungsi</th>
-            </tr>
-            <?php
-            $list = mysql_query("SELECT mhs.nrp, mhs.nama FROM mhs WHERE mhs.penasihat = '$userId'");
-            while($k = mysql_fetch_array($list)){
-            ?>
+          <h3>Nama : <?=$nama;?></h3>
+          <h3>NRP : <?=$nrp;?></h3>
+          <form name="setuju" method="post" action="inputpa.php" onSubmit="return confirm('Kalau sudah disetujui tidak bisa diubah kembali, Lanjut?');">
+            <table class="table table-hover table-bordered">
               <tr>
-                <td><?=$k['nrp'];?></td>
-                <td><?=$k['nama'];?></td>
-                <td>
-                  <form name="lihatkrs" method="post" action="krsmhs.php">
-                    <input type="hidden" name="nrp" value="<?php echo $k['nrp']; ?>">
-                    <button type="submit" class="btn btn-danger" title="KRS"><i class="icon-list icon-white" style="font-size:20px;"></i></button>
-                  </form>
+                <th>Nama Matakuliah</th>
+                <th>SKS</th>
+                <th>Setuju</th>
+              </tr>
+              <?php
+              $i = 0;
+              $j = 0;
+              $list = mysql_query("SELECT krs.nomor, matakuliah.nama_matkul, matakuliah.sks, krs.status 
+                FROM krs, matakuliah WHERE matakuliah.kode_matkul = krs.kode_matkul AND krs.nrp = '$nrp'");
+              while($k = mysql_fetch_array($list)){
+              ?>
+                <tr>
+                  <td><?=$k['nama_matkul'];?></td>
+                  <td><?=$k['sks'];?></td>
+                  <td>
+                    <?
+                      //Kalau sudah disetujui
+                      if ($k['status'] == 'Y'){
+                    ?>
+                        <input type="checkbox" id="slideThree<?=$i?>" name="nomor[]" value="<?=$k['nomor'];?>" checked="checked">
+                    <?
+                      }
+                      //Kalau belum disetujui
+                      else {
+                    ?>
+                        <input type="checkbox" id="slideThree<?=$i?>" name="nomor[]" value="<?=$k['nomor'];?>">
+                    <?
+                      }
+                    ?>
+                  </td>
+                </tr>
+              <?
+                $i++;
+                $j++;
+              }
+              ?>
+              <tr>
+                <td colspan="3">
+                  <center><button type="submit" class="btn btn-primary">Submit</button></center>
                 </td>
-              <tr>
-            <?
-            }
-            ?>
-          </table>
+              </tr>
+            </table>
+          </form>
         </div>
       </div>
     </div> <!-- /container -->

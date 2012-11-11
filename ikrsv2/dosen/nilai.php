@@ -67,11 +67,10 @@
     </div> 
 
     <div class="container">
-      <h1>iKRS Institut Teknologi Indonesia</h1>
       <h3>Mata Kuliah : <?=$nama_matkul?></h3>
       <div class="row">
       <div class="span9">
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered">
           <tr>
             <th>NRP</th>
             <th>Nama</th>
@@ -94,7 +93,7 @@
               <center>
               <form name="isinilai" method="post" action="inputnilai.php">
                 <input type="hidden" name="nomor" value="<?php echo $k['nomor']; ?>"> 
-                <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white icon-large"></i></button>
+                <button title="Isi Nilai" type="submit" class="btn btn-primary"><i class="icon-pencil icon-white icon-large"></i></button>
               </form>
               </center>
             </td>

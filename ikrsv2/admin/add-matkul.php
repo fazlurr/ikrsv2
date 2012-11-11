@@ -1,6 +1,6 @@
 <?php
   defined('__NOT_DIRECT') || define('__NOT_DIRECT',1);
-  include '../cek-akses.php';
+  include '../cek-akses.php'; 
 
   mysql_connect(DB_HOST,DB_USER,DB_PASS);
   mysql_select_db(DB_NAME);
@@ -11,7 +11,6 @@
     $nidn[] = $k['nidn'];
     $nama_dosen[] = $k['nama'];
   }
-
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -43,38 +42,59 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-if($_POST) { //Buat Output KRS
-	$_SESSION['fromMain'] = "true";//Session Khusus buat redirect
-}
-
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-  ini_set('track_errors', 1);
-  ini_set ("display_errors", 1);
-
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $errors = array();
-  $insertSQL = sprintf("INSERT INTO `user` (user_id, password, type) VALUES (%s, %s, %s)",
-                     GetSQLValueString($_POST['user_id'], "text"),
-                     GetSQLValueString(md5($_POST['password']),"text"),
-                     GetSQLValueString($_POST['type'], "text"));
+	$errors = array();
+  $insertSQL = sprintf("INSERT INTO matakuliah (kode_matkul, nama_matkul, sks, dosen) VALUES (%s, %s, %s, %s)",
+                       GetSQLValueString($_POST['kode_matkul'], "text"),
+                       GetSQLValueString($_POST['nama_matkul'], "text"),
+                       GetSQLValueString($_POST['sks'], "int"),
+                       GetSQLValueString($_POST['dosen'], "text"));
+
 
   $Result1 = mysql_query($insertSQL);
   if (!$Result1 && mysql_errno() == 1062) {
-      $errors[] = $_POST['user_id'] . ' sudah ada.';
+      $errors[] = $_POST['kode_matkul'] . ' sudah ada.';
   } 
   elseif (mysql_error()) {
     $errors[] = 'Sorry, there was a problem with the database. Please try later.';
   }
-  
-  $insertSQL2 = sprintf("INSERT INTO `mhs` (nrp, nama, penasihat) VALUES (%s, %s, %s)",
-                     GetSQLValueString($_POST['user_id'], "text"),
-                     GetSQLValueString($_POST['name'], "text"),
-                     GetSQLValueString($_POST['penasihat'], "text"));
-  $Result2 = mysql_query($insertSQL2);
+
+}
+
+if (!function_exists("GetSQLValueString")) {
+	function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+	{
+	  if (PHP_VERSION < 6) {
+		$theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+	  }
+	
+	  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+	
+	  switch ($theType) {
+		case "text":
+		  $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+		  break;    
+		case "long":
+		case "int":
+		  $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+		  break;
+		case "double":
+		  $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+		  break;
+		case "date":
+		  $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+		  break;
+		case "defined":
+		  $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+		  break;
+	  }
+	  return $theValue;
+	}
 }
 
 ?>
@@ -83,8 +103,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-  <title>iKRS | Input Mahasiswa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iKRS | Input Matakuliah</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -107,12 +127,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" />     
+    <link rel="shortcut icon" href="../ico/favicon.ico" />
     <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container" style="text-shadow:none;">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -120,17 +140,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="index.php">iKRS</a>
+          <a class="brand" href="">iKRS</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="index.php"><i class="icon-home"></i> Home</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mahasiswa <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="add-mhs.php"><i class="icon-plus"></i> Input Mahasiswa</a></li>
-                  <li class="divider"></li>
-                  <li><a href="list-mhs.php"><i class="icon-user"></i> Daftar Mahasiswa</a></li>
-                </ul>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mahasiswa <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="add-mhs.php"><i class="icon-plus"></i> Input Mahasiswa</a></li>
+                          <li class="divider"></li>
+                          <li><a href="list-mhs.php"><i class="icon-user"></i> Daftar Mahasiswa</a></li>
+                        </ul>
               </li>
               <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dosen <b class="caret"></b></a>
@@ -154,78 +174,75 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
         </div>
       </div>
     </div>
-
+    
     <div class="container">
-		<h1>Input Mahasiswa</h1>
-        <div class="row">
-        	<div class="span4">
-                <span class="required_notification">* Field tidak boleh kosong</span>
-                <form class="contact_form" method="post" name="form1" action="<?php echo $editFormAction; ?>">
-                <table class="table">
-                  <tr>
-                    <td>User ID:</td>
-                    <td><input type="text" name="user_id" value="" size="32" required /></td>
-                  </tr>
-                  <tr>
-                    <td>Nama:</td>
-                    <td><input type="text" name="name" value="" size="32" required /></td>
-                  </tr>
-                  <tr>
-                    <td>Password:</td>
-                    <td>
-                        <input type="text" name="password" value="" size="32" required />
-                        <input type="hidden" name="type" value="mhs">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Penasihat :</td>
-                    <td>
-                      <select name="penasihat">
-                        <?php
-                          for($i=0; $i<count($nidn); $i++){
-                        ?>
-                              <option value=<?=$nidn[$i];?>><?=$nama_dosen[$i];?></option>
-                        <?
-                          }
-                        ?>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                      <button type="submit" class="btn btn-success">Masukkan Data</button>
-                    </td>
-                  </tr>
-                </table>
-                <input type="hidden" name="MM_insert" value="form1" />
-              </form>
-          </div>
-          <div class="span3" name="notif">
-            <?php
-            if ($_POST && $errors) {
-              echo '<div class="label label-important" style="font-size: 20px;">';
-              echo '<ul>';
-              foreach ($errors as $error) {
-                echo "<li>$error</li>";
-              }
-              echo '</ul>';
-              echo '</div>';
-            } elseif ($_POST && !$errors) {
-              echo '<div class="tn-box tn-box-color-2 tn-box-active">';
-              echo '<p>Data berhasil dimasukkan</p>';
-              echo '</div>';
+      <h1>Input Matakuliah</h1>
+      <div class="row">
+        <div class="span4">
+          <span class="required_notification">* Field tidak boleh kosong</span>
+          <form class="contact_form" method="post" name="form1" action="<?php echo $editFormAction; ?>">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Kode Matakuliah:</td>
+                  <td><input type="text" name="kode_matkul" value="" size="32" required></td>
+                </tr>
+                <tr>
+                  <td>Nama Matakuliah:</td>
+                  <td><input type="text" name="nama_matkul" value="" size="32" required></td>
+                </tr>
+                <tr>
+                  <td>SKS :</td>
+                  <td><input type="text" name="sks" value="" size="32" required></td>
+                </tr>
+                <tr>
+                  <td>Dosen :</td>
+                  <td>
+                        <select name="dosen">
+                          <?php
+                            for($i=0; $i<count($nidn); $i++){
+                          ?>
+                                <option value=<?=$nidn[$i];?>><?=$nama_dosen[$i];?></option>
+                          <?
+                            }
+                          ?>
+                        </select>
+                      </td></tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td><button type="submit" class="btn btn-success">Masukkan Data</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <input type="hidden" name="MM_insert" value="form1">
+          </form>
+          <p>&nbsp;</p>
+        </div>
+        <div class="span3" name="notif">
+          <?php
+          if ($_POST && $errors) {
+            echo '<div class="label label-important" style="font-size: 20px;">';
+            echo '<ul>';
+            foreach ($errors as $error) {
+              echo "<li>$error</li>";
             }
-            ?>
-          </div>
-         </div>
-    </div> <!-- /container -->
+            echo '</ul>';
+            echo '</div>';
+          } elseif ($_POST && !$errors) {
+            echo '<div class="tn-box tn-box-color-2 tn-box-active">';
+            echo '<p>Data berhasil dimasukkan</p>';
+            echo '</div>';
+          }
+          ?>
+        </div>
+      </div>
+    </div> 
+    <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/modernizr.custom.39460.js"></script>
     <script src="../js/jquery-1.8.2.min.js"></script>
-	  <script src="../js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
   </body>
 </html>

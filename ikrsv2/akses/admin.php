@@ -20,4 +20,7 @@ $__akses_config = array(
 	'admin/list-mhs.php',
 	'admin/add-dosen.php',
 	'admin/editdosen.php',
+	'admin/list-matkul.php',
+	'admin/add-matkul.php',
+	'admin/editmatkul.php',
 );
