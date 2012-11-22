@@ -14,7 +14,64 @@
 13. Garis Tengah
 14. Jumbotron dan Masthead
 15. iKRS
+16. Responsive Tables
+17. Selection
 */
+
+/*17. Selection */
+::selection {
+  background: #FE854D;
+  color: white;
+}
+
+/*16. Responsive Tables*/
+/*@media only screen and (max-width: 760px), (max-device-width: 1024px) and (min-device-width: 768px)  {
+  /* Force table to not be like tables anymore 
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  
+  /* Hide table headers (but not display: none;, for accessibility) 
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  tr { border: 1px solid #ccc; }
+  
+  td { 
+    /* Behave  like a "row" 
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #eee; 
+    position: relative;
+    padding-left: 60%; 
+  }
+  
+  td:before { 
+    /* Now like a table header 
+    position: absolute;
+    /* Top/left values mimic padding 
+    top: 6px;
+    left: 6px;
+    width: 45%; 
+    padding-right: 10px; 
+    white-space: nowrap;
+  }
+  
+  /*Label the data
+  /*Tabel Dosen
+  #list-dosen td:nth-of-type(1):before { content: "NIDN"; }
+  #list-dosen td:nth-of-type(2):before { content: "Nama"; }
+  #list-dosen td:nth-of-type(3):before { content: "Fungsi"; }
+  /*Tabel Matkul
+  #list-matkul td:nth-of-type(1):before { content: "Kode Matkul"; }
+  #list-matkul td:nth-of-type(2):before { content: "Nama Matkul"; }
+  #list-matkul td:nth-of-type(3):before { content: "SKS"; }
+  #list-matkul td:nth-of-type(4):before { content: "Dosen"; }
+  #list-matkul td:nth-of-type(5):before { content: "Fungsi"; }
+}*/
 
 /*15. iKRS*/
 h1.ikrs{

@@ -167,6 +167,7 @@ $totalRows_mhs = mysql_num_rows($mhs);
                 <td>Penasihat</td>
                 <td>
                   <select name="penasihat">
+                    <option value="-">-</option>
                     <?php
                       for($i=0; $i<count($nidn); $i++){
                     ?>

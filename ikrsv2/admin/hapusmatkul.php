@@ -6,10 +6,9 @@
 	mysql_select_db(DB_NAME);
 
 	$userId = $_SESSION['user_id'];
-	//$nrp = $_GET['nrp'];
 	$komak = $_POST['kode_matkul'];
 	
-	if(!empty($nrp)){
+	if(!empty($komak)){
 		$sql = "DELETE FROM matakuliah WHERE kode_matkul='$komak'";
 		$result = mysql_query($sql) or die(mysql_error());
 		header('Location: ' . $_SERVER['HTTP_REFERER']);

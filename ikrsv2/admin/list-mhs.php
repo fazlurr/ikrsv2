@@ -32,7 +32,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_LocalCoy, $LocalCoy);
-$query_mhs = "SELECT * FROM mhs";
+$query_mhs = "SELECT mhs.nrp, mhs.nama as nama1, dosen.nama as nama2 FROM mhs, dosen WHERE mhs.penasihat = dosen.nidn";
 $mhs = mysql_query($query_mhs, $LocalCoy) or die(mysql_error());
 $row_mhs = mysql_fetch_assoc($mhs);
 $totalRows_mhs = mysql_num_rows($mhs);
@@ -45,8 +45,8 @@ $totalRows_mhs = mysql_num_rows($mhs);
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-  <title>iKRS | Daftar Mahasiswa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iKRS | Daftar Mahasiswa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -60,14 +60,26 @@ $totalRows_mhs = mysql_num_rows($mhs);
     </style>
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/sorter.style.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" /> 
-    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
+    <link rel="shortcut icon" href="../ico/favicon.ico" />
+    <!-- Le Javascript at the start -->
+    <script src="../js/jquery-1.8.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.tablesorter.min.js"></script>
+    <script src="../js/jquery.tablesorter.pager.js"></script>
+    <script>
+      $(document).ready(function() 
+        { 
+          $("#myTable").tablesorter(); 
+        } 
+      );
+    </script>
   </head>
 
   <body>
@@ -116,38 +128,54 @@ $totalRows_mhs = mysql_num_rows($mhs);
 
     <div class="container">
   		<h1>Daftar Mahasiswa</h1>
-      <div class="row">
-        <div class="span5">
-          <table class="table table-bordered table-hover">
-            <tr>
-              <th>NRP</th>
-              <th>Nama</th>
-              <th colspan="2" style="text-align:center">Action</th>
-            </tr>
-            <?php do { ?>
-              <tr>
-                <td><?php echo $row_mhs['nrp']; ?></td>
-                <td><?php echo $row_mhs['nama']; ?></td>
-                <td style="text-align:center">
-                  <input type=button class="btn btn-info" onClick="location.href='editmhs.php?nrp=<?php echo $row_mhs['nrp']; ?>'" value='Edit'></td>
-                <td style="text-align:center">
-                	<form name="hapusmhs" method="post" action="hapusmhs.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
-                    <input type="hidden" name="nrp" value="<?php echo $row_mhs['nrp']; ?>"> 
-                    <button type="submit" class="btn btn-danger" title="Hapus"><i class="icon-trash icon-white icon-large"></i></button>
-                  </form>
-                 </td>
-              </tr>
-              <?php } while ($row_mhs = mysql_fetch_assoc($mhs)); ?>
-          </table>
-        </div>
+      <table id="myTable" class="table table-bordered table-hover tablesorter">
+        <thead>
+          <tr>
+            <th class="header">NRP</th>
+            <th class="header">Nama</th>
+            <th class="header">Penasihat</th>
+            <th colspan="2" style="text-align:center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php do { ?>
+          <tr>
+            <td><?php echo $row_mhs['nrp']; ?></td>
+            <td><?php echo $row_mhs['nama1']; ?></td>
+            <td><?php echo $row_mhs['nama2'] ?></td>
+            <td style="text-align:center">
+              <input type=button class="btn btn-info" onClick="location.href='editmhs.php?nrp=<?php echo $row_mhs['nrp']; ?>'" value='Edit'></td>
+            <td style="text-align:center">
+            	<form name="hapusmhs" method="post" action="hapusmhs.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
+                <input type="hidden" name="nrp" value="<?php echo $row_mhs['nrp']; ?>"> 
+                <button type="submit" class="btn btn-danger" title="Hapus"><i class="icon-trash icon-white icon-large"></i></button>
+              </form>
+             </td>
+          </tr>
+          <?php } while ($row_mhs = mysql_fetch_assoc($mhs)); ?>
+        </tbody>
+      </table>
+      <div id="pager" class="pager" style="position: absolute;">
+        <form>
+          <img src="../img/first.png" class="first">
+          <img src="../img/prev.png" class="prev">
+          <input type="text" class="pagedisplay">
+          <img src="../img/next.png" class="next">
+          <img src="../img/last.png" class="last">
+          <select class="pagesize">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+          </select>
+        </form>
       </div>
+
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery-1.8.2.min.js"></script>
-	  <script src="../js/bootstrap.min.js"></script>
   </body>
 </html>
 <?php

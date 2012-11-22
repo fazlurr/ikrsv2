@@ -39,7 +39,7 @@ if (isset($_GET['pageNum_Matkul'])) {
 $startRow_Matkul = $pageNum_Matkul * $maxRows_Matkul;
 
 mysql_select_db($database_LocalCoy, $LocalCoy);
-$query_Matkul = "SELECT * FROM matakuliah ORDER BY kode_matkul ASC";
+$query_Matkul = "SELECT matakuliah.kode_matkul, matakuliah.nama_matkul, matakuliah.sks, dosen.nama FROM matakuliah, dosen WHERE matakuliah.dosen=dosen.nidn ORDER BY kode_matkul ASC";
 $query_limit_Matkul = sprintf("%s LIMIT %d, %d", $query_Matkul, $startRow_Matkul, $maxRows_Matkul);
 $Matkul = mysql_query($query_limit_Matkul, $LocalCoy) or die(mysql_error());
 $row_Matkul = mysql_fetch_assoc($Matkul);
@@ -75,14 +75,23 @@ $totalPages_Matkul = ceil($totalRows_Matkul/$maxRows_Matkul)-1;
     </style>
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/sorter.style.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="../ico/favicon.ico" />
-    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
+    <script src="../js/jquery-1.8.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.tablesorter.min.js"></script>
+    <script src="../js/jquery.tablesorter.pager.js"></script>
+    <script>
+        $(document).ready(function() 
+          { 
+            $("#myTable").tablesorter(); 
+          } 
+        );
+      </script>
   </head>
 
   <body>
@@ -129,42 +138,59 @@ $totalPages_Matkul = ceil($totalRows_Matkul/$maxRows_Matkul)-1;
       </div>
     </div>
 
-    
     <div class="container">
       <h1>Daftar Matakuliah</h1>
-      <table class="table table-bordered table-hover">
-        <tr>
-          <th>Kode Matkul</th>
-          <th>Nama Matkul</th>
-          <th>SKS</th>
-          <th>Dosen</th>
-          <th colspan="2">Fungsi</th>
-        </tr>
+      <table id="myTable" class="table table-bordered table-hover tablesorter">
+        <thead>
+          <tr>
+            <th class="header">Kode Matkul</th>
+            <th class="header">Nama Matkul</th>
+            <th class="header">SKS</th>
+            <th class="header">Dosen</th>
+            <th class="header" colspan="2">Fungsi</th>
+          </tr>
+        </thead>
+        <tbody>
         <?php do { ?>
           <tr>
             <td><?php echo $row_Matkul['kode_matkul']; ?></td>
             <td><?php echo $row_Matkul['nama_matkul']; ?></td>
             <td><?php echo $row_Matkul['sks']; ?></td>
-            <td><?php echo $row_Matkul['dosen']; ?></td>
+            <td><?php echo $row_Matkul['nama']; ?></td>
             <td style="text-align:center">
                   <input type=button class="btn btn-info" onClick="location.href='editmatkul.php?km=<?php echo $row_Matkul['kode_matkul']; ?>'" value='Edit'></td>
             <td style="text-align:center">
-                	<form name="hapusmhs" method="post" action="hapusmatkul.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
-                    <input type="hidden" name="nrp" value="<?php echo $row_Matkul['kode-matkul']; ?>"> 
-                    <button type="submit" class="btn btn-danger" title="Hapus"><i class="icon-trash icon-white icon-large"></i></button>
-                  </form>
-                 </td>
+            	<form name="hapusmhs" method="post" action="hapusmatkul.php" onsubmit="return confirm('Click OK or Cancel to Continue');">
+                <input type="hidden" name="kode_matkul" value=<?=$row_Matkul['kode_matkul'];?>> 
+                <button type="submit" class="btn btn-danger" title="Hapus"><i class="icon-trash icon-white icon-large"></i></button>
+              </form>
+            </td>
           </tr>
           <?php } while ($row_Matkul = mysql_fetch_assoc($Matkul)); ?>
+        </tbody>
       </table>
+      <div id="pager" class="pager" style="position: absolute;">
+        <form>
+          <img src="../img/first.png" class="first">
+          <img src="../img/prev.png" class="prev">
+          <input type="text" class="pagedisplay">
+          <img src="../img/next.png" class="next">
+          <img src="../img/last.png" class="last">
+          <select class="pagesize">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+          </select>
+        </form>
+      </div>
     </div> 
     <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery-1.8.2.min.js"></script>
-	  <script src="../js/bootstrap.min.js"></script>
+
   </body>
 </html>
 <?php

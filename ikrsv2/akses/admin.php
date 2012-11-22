@@ -23,4 +23,5 @@ $__akses_config = array(
 	'admin/list-matkul.php',
 	'admin/add-matkul.php',
 	'admin/editmatkul.php',
+	'admin/hapusmatkul.php',
 );

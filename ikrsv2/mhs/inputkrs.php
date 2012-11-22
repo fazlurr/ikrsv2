@@ -125,7 +125,7 @@
 				<h2>Berikut KRS yang anda ambil :</h2>					
 				<table class="table table-hover table-bordered">
 					<tr>
-						<th height="25">No.</th>
+						<th>No.</th>
 						<th>Kode Mata Kuliah</th>
 						<th>Nama Mata Kuliah</th>
 						<th>Semester</th>
@@ -168,6 +168,8 @@
 					<?php
 							$jum = $jum + $k['sks'];
 							$i++;
+							if ($k['kode_matkul'] == 'DU1013' || $k['kode_matkul'] == 'DU1014'){ $agama = 1; }
+							else { $agama = 0; }
 						}
 					?>
 					<tr>
@@ -215,10 +217,23 @@
 							<td id="k2<?=$i;?>"><?=$nama_matkul[$i];?></td>
 							<td id="k3<?=$i;?>"><?=$sks[$i];?></td>
 							<td id="k4<?=$i;?>">
-								
+							<?
+								if ($kode_matkul[$i] == 'DU1013' || $kode_matkul[$i] == 'DU1014'){
+									if ($agama == 1){
+									?>	<input type="checkbox" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>" disabled>
+							<?
+									}
+									else {
+									?> <input type="checkbox" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>">
+							<?	
+									}
+								}
+								else {
+							?>
 									<input type="checkbox" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>">
-								
-								
+							<?
+								}
+							?>
 							</td>
 						</tr>
 						<?php

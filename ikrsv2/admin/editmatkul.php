@@ -169,6 +169,7 @@ $totalRows_mk = mysql_num_rows($mk);
                 <td nowrap align="right">Dosen</td>
                 <td>
                   <select name="dosen">
+                    <option value="-">-</option>
                     <?php
                       for($i=0; $i<count($nidn); $i++){
                     ?>
@@ -181,6 +182,7 @@ $totalRows_mk = mysql_num_rows($mk);
               <tr valign="baseline">
                 <td nowrap align="right">&nbsp;</td>
                 <td><input type="submit" class="btn btn-success" value="Update record"></td>
+                <td><button class="btn btn-alert">Cancel</td>
               </tr>
             </table>
             <input type="hidden" name="MM_update" value="form1">
