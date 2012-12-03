@@ -169,7 +169,6 @@
 							$jum = $jum + $k['sks'];
 							$i++;
 							if ($k['kode_matkul'] == 'DU1013' || $k['kode_matkul'] == 'DU1014'){ $agama = 1; }
-							else { $agama = 0; }
 						}
 					?>
 					<tr>
@@ -179,7 +178,7 @@
 						<td>
 							<b><?=$jum;?></b>
 						</td>
-						<td></td>
+						<td colspan=2></td>
 					</tr>
 				</table>
 				<p>
@@ -219,7 +218,7 @@
 							<td id="k4<?=$i;?>">
 							<?
 								if ($kode_matkul[$i] == 'DU1013' || $kode_matkul[$i] == 'DU1014'){
-									if ($agama == 1){
+									if (isset($agama) && $agama == 1){
 									?>	<input type="checkbox" name="mk[]" onClick="hitungtotal()" value="<?=$kode_matkul[$i];?>" id="mk<?=$i;?>" disabled>
 							<?
 									}

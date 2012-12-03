@@ -124,7 +124,7 @@
               ?>
               <tr>
                 <td colspan="3">
-                  <center><button type="submit" class="btn btn-primary">Submit</button></center>
+                  <center><button type="submit" class="btn btn-success">Submit</button></center>
                 </td>
               </tr>
             </table>

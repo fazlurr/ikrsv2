@@ -43,7 +43,7 @@
 	    		padding-top: 20px; /* 60px to make the container go all the way to the bottom of the topbar */
 	      	}
 	    </style>
-	    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+a	    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	    <link href="css/font-awesome.css" rel="stylesheet">
 	   	<link href="css/custom.css" rel="stylesheet">
 	    <link href="css/animate.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@
 	    	<div class="row">
     			<center>
     				<img src="img/logo-ikrs.png">
-    				<h1 class="ikrs"><span class="i">i</span>KRS</h1>
+    				<h1 class="ikrs" style="cursor:default;"><span class="i">i</span>KRS</h1>
     			</center>
     			<div style="text-align : center; background : whiteSmoke;">
 	    			<div id="bottom-shadow"></div>

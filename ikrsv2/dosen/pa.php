@@ -20,7 +20,7 @@
 
     <!-- Le styles -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/custom.css" rel="stylesheet">
+    <link href="../css/sorter.style.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -28,13 +28,26 @@
     </style>
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" /> 
+    <link rel="shortcut icon" href="../ico/favicon.ico" />
+    <script src="../js/jquery-1.8.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.tablesorter.min.js"></script>
+    <script src="../js/jquery.tablesorter.pager.js"></script>
+    <script>
+        $(document).ready(function() 
+          { 
+            $("#myTable").tablesorter()
+            .tablesorterPager({container: $("#pager")});
+          } 
+        );
+      </script>
   </head>
 
   <body>
@@ -63,12 +76,15 @@
       <h1>Daftar Mahasiswa</h1>
       <div class="row">
         <div class="span9">
-          <table class="table table-hover table-bordered">
-            <tr>
-              <th>NRP</th>
-              <th>Nama</th>
-              <th>Fungsi</th>
-            </tr>
+          <table class="table table-hover table-bordered tablesorter" id="myTable">
+            <thead>
+              <tr>
+                <th class="header">NRP</th>
+                <th class="header">Nama</th>
+                <th class="header">Fungsi</th>
+              </tr>
+            </thead>
+            <tbody>
             <?php
             $list = mysql_query("SELECT mhs.nrp, mhs.nama FROM mhs WHERE mhs.penasihat = '$userId'");
             while($k = mysql_fetch_array($list)){
@@ -79,14 +95,30 @@
                 <td>
                   <form name="lihatkrs" method="post" action="krsmhs.php">
                     <input type="hidden" name="nrp" value="<?php echo $k['nrp']; ?>">
-                    <button type="submit" class="btn btn-danger" title="KRS"><i class="icon-list icon-white" style="font-size:20px;"></i></button>
+                    <button type="submit" class="btn btn-primary" title="KRS"><i class="icon-list icon-white" style="font-size:20px;"></i></button>
                   </form>
                 </td>
               <tr>
             <?
             }
             ?>
+            </tbody>
           </table>
+          <div id="pager" class="pager" style="position: absolute;">
+            <form>
+              <img src="../img/first.png" class="first">
+              <img src="../img/prev.png" class="prev">
+              <input type="text" class="pagedisplay">
+              <img src="../img/next.png" class="next">
+              <img src="../img/last.png" class="last">
+              <select class="pagesize">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+            </form>
+          </div>
         </div>
       </div>
     </div> <!-- /container -->
@@ -94,7 +126,6 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery-1.8.2.min.js"></script>
 	  <script src="../js/bootstrap.min.js"></script>
   </body>
 </html>

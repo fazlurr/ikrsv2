@@ -181,8 +181,8 @@ $totalRows_mk = mysql_num_rows($mk);
                 </td>              </tr>
               <tr valign="baseline">
                 <td nowrap align="right">&nbsp;</td>
-                <td><input type="submit" class="btn btn-success" value="Update record"></td>
-                <td><button class="btn btn-alert">Cancel</td>
+                <td><input type="submit" class="btn btn-success" value="Update record">
+                <a href="list-matkul.php"><div class="btn btn-danger">Cancel</div></a></td>
               </tr>
             </table>
             <input type="hidden" name="MM_update" value="form1">

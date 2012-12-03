@@ -5,14 +5,57 @@
   mysql_connect(DB_HOST,DB_USER,DB_PASS);
   mysql_select_db(DB_NAME);
 
+  //Panggil Nomor KRS, Kode Matkul, dan Nama Matkul
   if (isset($_POST['nomor'])){
     $nomor = $_POST['nomor'];
+    $kode_matkul = $_POST['kode_matkul'];
+    $sqlmatkul = mysql_query("SELECT nama_matkul FROM matakuliah WHERE kode_matkul='$kode_matkul' ");
+    while($k = mysql_fetch_array($sqlmatkul)){
+      $nama_matkul = $k['nama_matkul'];
+    }
   }
 
-  if ($_POST && (isset($_POST['nilai'])) ){
-    $nilai = mysql_real_escape_string($_POST['nilai']);
-    $nomor2 = mysql_real_escape_string($_POST['nomor2']);
-    $input = "UPDATE krs SET nilai='$nilai' WHERE nomor='$nomor2'";
+  if ($_POST && (isset($_POST['nilai_uts'])) ){
+    $nilai_uts = $_POST['nilai_uts'];
+    $nilai_uas = $_POST['nilai_uas'];
+    $tugas = $_POST['tugas'];
+    $absensi = $_POST['absensi'];
+    $nomor2 = $_POST['nomor2'];
+    //Hitung Nilai Akhir
+    $ps_uts = 30/100;
+    $ps_uas = 40/100;
+    $ps_tugas = 20/100;
+    $ps_absensi = 10/100;
+
+    $nilai_akhir = ($nilai_uts*$ps_uts)+($nilai_uas*$ps_uas)+($tugas*$ps_tugas)+($absensi*$ps_absensi);
+    if ($nilai_akhir>79){
+      $nilai = 'A';
+    }
+    elseif ($nilai_akhir>76&&$nilai_akhir<80){
+      $nilai = 'A-';
+    }
+    elseif ($nilai_akhir>73&&$nilai_akhir<77){
+      $nilai = 'B+';
+    }
+    elseif ($nilai_akhir>67&&$nilai_akhir<74){
+      $nilai = 'B';
+    }
+    elseif ($nilai_akhir>64&&$nilai_akhir<68){
+      $nilai = 'B-';
+    }
+    elseif ($nilai_akhir>61&&$nilai_akhir<65){
+      $nilai = 'C+';
+    }
+    elseif ($nilai_akhir>55&&$nilai_akhir<62){
+      $nilai = 'C';
+    }
+    elseif ($nilai_akhir>45&&$nilai_akhir<56){
+      $nilai = 'D';
+    }
+    elseif ($nilai_akhir<46&&$nilai_akhir) {
+      $nilai = 'E';
+    } 
+    $input = "UPDATE krs SET nilai='$nilai', nilai_uts='$nilai_uts', nilai_uas='$nilai_uas', tugas='$tugas', absensi='$absensi' WHERE nomor='$nomor2'";
     $mulai = mysql_query($input) or die(mysql_error());
     header('Location: nilai.php');
   }
@@ -23,7 +66,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-<title>iKRS</title>
+<title>iKRS | Input Nilai</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -46,7 +89,6 @@
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="../ico/favicon.ico" /> 
-    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
 </head>
 
   <body>
@@ -73,12 +115,12 @@
 
     <div class="container">
 
-      <h1>iKRS Institut Teknologi Indonesia</h1>
+      <h2>Matakuliah :<?php echo $nama_matkul;?> (<?php echo $kode_matkul;?>)</h2>
       <div class="row">
       	<div class="span5">
           <?
           if (isset($nomor)){
-            $info = mysql_query("SELECT mhs.nrp, mhs.nama, krs.nomor, krs.semester, krs.tahun FROM mhs LEFT JOIN krs ON mhs.nrp=krs.nrp WHERE krs.nomor='$nomor' AND krs.status='Y' ");
+            $info = mysql_query("SELECT mhs.nrp, mhs.nama, krs.nomor, krs.semester, krs.tahun, krs.nilai_uts, krs.nilai_uas, krs.tugas, krs.absensi FROM mhs LEFT JOIN krs ON mhs.nrp=krs.nrp WHERE krs.nomor='$nomor' AND krs.status='Y' ");
             while($k = mysql_fetch_array($info)){
           ?>
             <table class="table table-hover">
@@ -96,9 +138,40 @@
               </tr>
             </table>
             <form name="isinilai" method="post" action="">
-              <input type="text" name="nilai" placeholder="A, B, C, D, E" />
-              <input type="hidden" name="nomor2" value="<?php echo $k['nomor'];?>" />
-              <button type="submit" class="btn btn-primary"><i class="icon-pencil icon-white icon-large"></i></button>
+              <table class="table">
+                <tr>
+                  <td>Nilai UTS :</td>
+                  <td>
+                    <!--<input type="text" name="nilai" placeholder="A, B, C, D, E" />-->
+                    <input type="number" min=0 max=100 name="nilai_uts" placeholder="Nilai UTS" value="<?echo $k['nilai_uts'];?>" required />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nilai UAS :</td>
+                  <td>
+                    <input type="number" min=0 max=100 name="nilai_uas" placeholder="Nilai UAS" value="<?echo $k['nilai_uas'];?>" required />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tugas :</td>
+                  <td>
+                    <input type="number" min=0 max=100 name="tugas" placeholder="Tugas" value="<?echo $k['tugas'];?>" required />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Absensi :</td>
+                  <td>
+                    <input type="number" min=0 max=100 name="absensi" placeholder="Absensi" value="<?echo $k['absensi'];?>" required />
+                  </td>
+                </tr>
+                  <td colspan=2>
+                    <center><input type="hidden" name="nomor2" value="<?php echo $k['nomor'];?>" />
+                    <button type="submit" class="btn btn-success" title="Submit">Submit</button>
+                    <a href="nilai.php"><div class="btn btn-danger">Cancel</div></a>
+                    </center>
+                  </td>
+                </tr>
+              </table>
             </form>
             <?
               }

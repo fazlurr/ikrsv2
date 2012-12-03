@@ -58,10 +58,11 @@
     </div>
 
     <div class="container">
-
-      <h1>iKRS</h1> 
-      <h1 class="bebas">Institut Teknologi Indonesia</h1>
-      
+      <div class="jumbotron masthead">
+        <div class="container" style="cursor:default;">
+          <h1><span class="i">i</span>KRS</h1>
+        </div>
+      </div>
     </div> <!-- /container -->
 
     <!-- Le javascript

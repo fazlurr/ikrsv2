@@ -180,7 +180,8 @@ $totalRows_mhs = mysql_num_rows($mhs);
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td><input type="submit" class="btn btn-success" value="Update record"></td>
+                <td><input type="submit" class="btn btn-success" value="Update record">
+                <a href="list-mhs.php"><div class="btn btn-danger">Cancel</div></a></td>
               </tr>
             </table>
             <input type="hidden" name="MM_update" value="form1">

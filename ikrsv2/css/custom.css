@@ -3,7 +3,7 @@
 2. Posisi Icon
 3. Checkboxes
 4. Shadow from Google
-5. Table Head
+5. Table
 6. Ubah Warna Font Navbar
 7. Ubah Warna Body
 8. Modif Important Box
@@ -16,7 +16,25 @@
 15. iKRS
 16. Responsive Tables
 17. Selection
+18. TD Color
+19. Pager
+20. Search
 */
+
+/*20. Search */
+.navbar-search .search-query {
+  border-radius: 5px;
+}
+
+/*19. Pager */
+.pager{
+  margin: none;
+}
+
+/*18. TD Color */
+td {
+  background-color: white;
+}
 
 /*17. Selection */
 ::selection {
@@ -305,7 +323,11 @@ body {
   background-color: #111111;
 }
 
-/*5. Table Head */
+/*5. Table */
+.table {
+  margin-top: 10px;
+}
+
 .table th {
   background-color: whiteSmoke;
 }

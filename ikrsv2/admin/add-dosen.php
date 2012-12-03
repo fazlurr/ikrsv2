@@ -56,7 +56,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   $Result2 = mysql_query($insertSQL2);
 
 if (!$Result2 && mysql_errno() == 1062) {
-      $errors[] = $_POST['user_id'] . ' sudah ada.';
+      $errors[] = $_POST['nidn'] . ' sudah ada.';
     } 
 elseif (mysql_error()) {
     $errors[] = mysql_errno(). 'Maaf terjadi kesalahan database.';

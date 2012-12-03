@@ -52,7 +52,6 @@ $totalRows_mhs = mysql_num_rows($mhs);
 
     <!-- Le styles -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/custom.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -61,6 +60,7 @@ $totalRows_mhs = mysql_num_rows($mhs);
     <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/sorter.style.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -76,7 +76,9 @@ $totalRows_mhs = mysql_num_rows($mhs);
     <script>
       $(document).ready(function() 
         { 
-          $("#myTable").tablesorter(); 
+          $("#myTable")
+          .tablesorter()
+          .tablesorterPager({container: $("#pager")});
         } 
       );
     </script>
@@ -127,7 +129,16 @@ $totalRows_mhs = mysql_num_rows($mhs);
     </div>
 
     <div class="container">
-  		<h1>Daftar Mahasiswa</h1>
+      <div class="row-fluid">
+        <div class="span8">
+  		    <h1>Daftar Mahasiswa</h1>
+        </div>
+        <div class="span4">
+          <form class="navbar-search pull-right">
+            <input type="text" class="search-query" placeholder="Search">
+          </form>
+        </div>
+      </div>
       <table id="myTable" class="table table-bordered table-hover tablesorter">
         <thead>
           <tr>
@@ -155,6 +166,7 @@ $totalRows_mhs = mysql_num_rows($mhs);
           <?php } while ($row_mhs = mysql_fetch_assoc($mhs)); ?>
         </tbody>
       </table>
+      <!--Pager-->
       <div id="pager" class="pager" style="position: absolute;">
         <form>
           <img src="../img/first.png" class="first">
@@ -173,9 +185,6 @@ $totalRows_mhs = mysql_num_rows($mhs);
 
     </div> <!-- /container -->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
 <?php

@@ -74,14 +74,28 @@ $totalPages_dosen = ceil($totalRows_dosen/$maxRows_dosen)-1;
   </style>
   <link href="../css/bootstrap-responsive.min.css" rel="stylesheet">
   <link href="../css/font-awesome.css" rel="stylesheet">
+  <link href="../css/sorter.style.css" rel="stylesheet">
   <link href="../css/custom.css" rel="stylesheet">
   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
       <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="../ico/favicon.ico" /> 
-    <script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
+    <link rel="shortcut icon" href="../ico/favicon.ico" />
+    <!-- Le Javascript at the start -->
+    <script src="../js/jquery-1.8.2.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.tablesorter.min.js"></script>
+    <script src="../js/jquery.tablesorter.pager.js"></script>
+    <script>
+      $(document).ready(function() 
+        { 
+          $("#myTable")
+          .tablesorter()
+          .tablesorterPager({container: $("#pager")});
+        } 
+      );
+    </script>
 </head>
 
 <body>
@@ -130,14 +144,15 @@ $totalPages_dosen = ceil($totalRows_dosen/$maxRows_dosen)-1;
 
   <div class="container">
     <h1>Daftar Dosen</h1>
-    <table class="table table-hover table-bordered" id="list-dosen">
+    <table class="table table-hover table-bordered tablesorter" id="myTable">
       <thead>
         <tr>
-          <th>NIDN</th>
-          <th>Nama</th>
-          <th colspan=2 style="text-align:center">Fungsi</th>
+          <th class="header">NIDN</th>
+          <th class="header">Nama</th>
+          <th class="header" colspan=2 style="text-align:center">Fungsi</th>
         </tr>
       </thead>
+      <tbody>
       <?php do { ?>
         <tr>
           <td><?php echo $row_dosen['nidn']; ?></td>
@@ -153,14 +168,26 @@ $totalPages_dosen = ceil($totalRows_dosen/$maxRows_dosen)-1;
           </td>
         </tr>
         <?php } while ($row_dosen = mysql_fetch_assoc($dosen)); ?>
+      </tbody>
     </table>
+    <!--Pager-->
+      <div id="pager" class="pager" style="position: absolute;">
+        <form>
+          <img src="../img/first.png" class="first">
+          <img src="../img/prev.png" class="prev">
+          <input type="text" class="pagedisplay">
+          <img src="../img/next.png" class="next">
+          <img src="../img/last.png" class="last">
+          <select class="pagesize">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+          </select>
+        </form>
+      </div>
   </div> <!-- /container -->
 
-    <!-- Le javascript
-      ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-      <script src="../js/jquery-1.8.2.min.js"></script>
-	    <script src="../js/bootstrap.min.js"></script>
   </body>
 </html>
 <?php
