@@ -16,6 +16,7 @@
   }
 
   if ($_POST && (isset($_POST['nilai_uts'])) ){
+    $kode_matkul = $_POST['kode_matkul'];
     $nilai_uts = $_POST['nilai_uts'];
     $nilai_uas = $_POST['nilai_uas'];
     $tugas = $_POST['tugas'];
@@ -55,8 +56,23 @@
     elseif ($nilai_akhir<46&&$nilai_akhir) {
       $nilai = 'E';
     } 
-    $input = "UPDATE krs SET nilai='$nilai', nilai_uts='$nilai_uts', nilai_uas='$nilai_uas', tugas='$tugas', absensi='$absensi' WHERE nomor='$nomor2'";
-    $mulai = mysql_query($input) or die(mysql_error());
+    //Query Nilai
+    $input_nilai = "UPDATE krs SET nilai='$nilai' WHERE nomor='$nomor2'";
+    $mulai = mysql_query($input_nilai) or die(mysql_error());
+    //Query UTS
+    $input_uts = "INSERT INTO uts (nomor_krs, kode_matkul, nilai_uts) VALUES ('$nomor2','$kode_matkul','$nilai_uts')";
+    $mulai2 = mysql_query($input_uts) or die(mysql_error());
+    //Query UAS
+    $input_uas = "INSERT INTO uas (nomor_krs, kode_matkul, nilai_uas) VALUES ('$nomor2','$kode_matkul','$nilai_uas')";
+    $mulai3 = mysql_query($input_uas) or die(mysql_error());
+    //Query tugas
+    $input_tugas = "INSERT INTO tugas (nomor_krs, kode_matkul, nilai_tugas) VALUES ('$nomor2','$kode_matkul','$tugas')";
+    $mulai4 = mysql_query($input_tugas) or die(mysql_error());
+    //Query kehadiran
+    $input_kehadiran = "INSERT INTO kehadiran (nomor_krs, kode_matkul, presensi) VALUES ('$nomor2','$kode_matkul','$absensi')";
+    $mulai5 = mysql_query($input_kehadiran) or die(mysql_error());
+
+    //Redirect
     header('Location: nilai.php');
   }
 
@@ -120,7 +136,7 @@
       	<div class="span5">
           <?
           if (isset($nomor)){
-            $info = mysql_query("SELECT mhs.nrp, mhs.nama, krs.nomor, krs.semester, krs.tahun, krs.nilai_uts, krs.nilai_uas, krs.tugas, krs.absensi FROM mhs LEFT JOIN krs ON mhs.nrp=krs.nrp WHERE krs.nomor='$nomor' AND krs.status='Y' ");
+            $info = mysql_query("SELECT mhs.nrp, mhs.nama, krs.nomor, krs.semester, krs.tahun FROM mhs LEFT JOIN krs ON mhs.nrp=krs.nrp WHERE krs.nomor='$nomor' AND krs.status='Y' ");
             while($k = mysql_fetch_array($info)){
           ?>
             <table class="table table-hover">
@@ -165,9 +181,11 @@
                   </td>
                 </tr>
                   <td colspan=2>
-                    <center><input type="hidden" name="nomor2" value="<?php echo $k['nomor'];?>" />
-                    <button type="submit" class="btn btn-success" title="Submit">Submit</button>
-                    <a href="nilai.php"><div class="btn btn-danger">Cancel</div></a>
+                    <center>
+                      <input type="hidden" name="nomor2" value="<?php echo $k['nomor'];?>" />
+                      <input type="hidden" name="kode_matkul" value="<?php echo $kode_matkul;?>" />
+                      <button type="submit" class="btn btn-success" title="Submit">Submit</button>
+                      <a href="nilai.php"><div class="btn btn-danger">Cancel</div></a>
                     </center>
                   </td>
                 </tr>

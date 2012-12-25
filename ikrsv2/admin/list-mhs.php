@@ -133,11 +133,11 @@ $totalRows_mhs = mysql_num_rows($mhs);
         <div class="span8">
   		    <h1>Daftar Mahasiswa</h1>
         </div>
-        <div class="span4">
+        <!--<div class="span4">
           <form class="navbar-search pull-right">
             <input type="text" class="search-query" placeholder="Search">
           </form>
-        </div>
+        </div>-->
       </div>
       <table id="myTable" class="table table-bordered table-hover tablesorter">
         <thead>
